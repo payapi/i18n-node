@@ -1,13 +1,13 @@
 {
-  "name": "i18n",
+  "name": "payapi-i18n",
   "description": "lightweight translation module with dynamic json storage",
   "version": "0.8.3",
-  "homepage": "http://github.com/mashpie/i18n-node",
+  "homepage": "https://github.com/payapi/i18n-node",
   "repository": {
     "type": "git",
-    "url": "http://github.com/mashpie/i18n-node.git"
+    "url": "https://github.com/payapi/i18n-node.git"
   },
-  "author": "Marcus Spiegel <marcus.spiegel@gmail.com>",
+  "author": "PayApi LTD",
   "main": "./index",
   "keywords": [
     "template",
