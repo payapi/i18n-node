@@ -46,6 +46,7 @@ module.exports = (function() {
     autoReload,
     cookiename,
     defaultLocale,
+    retryInDefaultLocale,
     directory,
     directoryPermissions,
     extension,
@@ -130,6 +131,9 @@ module.exports = (function() {
 
     // setting defaultLocale
     defaultLocale = (typeof opt.defaultLocale === 'string') ? opt.defaultLocale : 'en';
+
+    retryInDefaultLocale = (typeof opt.retryInDefaultLocale === 'boolean') ?
+      opt.retryInDefaultLocale : false;
 
     // auto reload locale files when changed
     autoReload = (typeof opt.autoReload === 'boolean') ? opt.autoReload : false;
@@ -829,7 +833,7 @@ module.exports = (function() {
   /**
    * read locale file, translate a msg and write to fs if new
    */
-  var translate = function(locale, singular, plural, skipSyncToAllFiles) {
+  var translate = function(locale, singular, plural, skipSyncToAllFiles, skipDefaultCheck) {
 
     // add same key to all translations
     if (!skipSyncToAllFiles && syncFiles) {
@@ -885,21 +889,20 @@ module.exports = (function() {
     var accessor = localeAccessor(locale, singular);
     var mutator = localeMutator(locale, singular);
 
-    if (plural) {
-      if (!accessor()) {
-        mutator({
-          'one': defaultSingular || singular,
-          'other': defaultPlural || plural
-        });
-        write(locale);
-      }
-    }
-
     if (!accessor()) {
-      mutator(defaultSingular || singular);
+      if (retryInDefaultLocale && !skipDefaultCheck) {
+        mutator(translate(defaultLocale, singular, plural, true, true));
+      } else {
+        if (plural)
+          mutator({
+            'one': defaultSingular || singular,
+            'other': defaultPlural || plural
+          });
+        else
+          mutator(defaultSingular || singular);
+      }
       write(locale);
     }
-
     return accessor();
   };
 
