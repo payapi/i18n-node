@@ -1,7 +1,7 @@
 {
   "name": "payapi-i18n",
   "description": "lightweight translation module with dynamic json storage",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "homepage": "https://github.com/payapi/i18n-node",
   "repository": {
     "type": "git",
